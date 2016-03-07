@@ -3,7 +3,7 @@ MAINTAINER AshDev <ashdevfr@gmail.com>
 
 RUN apt-get update
 
-RUN apt-get install -y curl wget vim git tmux
+RUN apt-get install -y curl wget vim git
 
 # Zsh
 RUN apt-get install -y zsh
@@ -15,6 +15,10 @@ RUN git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh \
 RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash
 RUN echo '[[ -r $NVM_DIR/bash_completion ]] && . $NVM_DIR/bash_completion' >> ~/.zshrc
 
+ENV NODE_VERSION 5.7.1
+RUN . $HOME/.nvm/nvm.sh && nvm install $NODE_VERSION && nvm alias default $NODE_VERSION && nvm use default && npm install -g gulp del
+
+
 # Git Aliases
 RUN git config --global alias.co checkout
 RUN git config --global alias.ci commit
@@ -25,3 +29,6 @@ RUN git config --global alias.r rebase
 RUN git config --global alias.ri rebase -i
 RUN git config --global alias.l '!git --no-pager log --graph --pretty=format:"%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit --date=relative'
 RUN git config --global alias.lg 'log --graph --pretty=format:"%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit --date=relative'
+
+# Tmux
+RUN apt-get install -y tmux
