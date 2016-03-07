@@ -7,7 +7,9 @@ RUN apt-get install -y curl wget vim git
 
 # Zsh
 RUN apt-get install -y zsh
-RUN curl -o-  https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | bash
+RUN git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh \
+      && cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc \
+      && chsh -s /bin/zsh
 
 # NVM
 RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash
