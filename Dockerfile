@@ -3,7 +3,7 @@ MAINTAINER AshDev <ashdevfr@gmail.com>
 
 RUN apt-get update
 
-RUN apt-get install -y curl wget vim git
+RUN apt-get install -y curl wget vim git tmux
 
 # Zsh
 RUN apt-get install -y zsh
