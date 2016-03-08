@@ -7,17 +7,21 @@ RUN apt-get install -y curl wget vim git
 
 # Zsh
 RUN apt-get install -y zsh
-RUN git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh \
-      && cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc \
-      && chsh -s /bin/zsh
+RUN git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh && \
+  cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc && \
+  chsh -s /bin/zsh
 
 # NVM
-RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash
-RUN echo '[[ -r $NVM_DIR/bash_completion ]] && . $NVM_DIR/bash_completion' >> ~/.zshrc
-
 ENV NVM_DIR=/root/.nvm
 ENV NODE_VERSION 5.7.1
-RUN . $HOME/.nvm/nvm.sh && nvm install $NODE_VERSION && nvm alias default $NODE_VERSION && nvm use default && npm install -g gulp del grunt-cli bower
+RUN NVM_VERSION="$(curl -s -L http://latest.nvm.sh -o /dev/null -D - | grep -Ei '^Location: .*tag/v[0-9.]+' | grep -oEi 'v[0-9.]+')" && \
+  curl -o- https://raw.githubusercontent.com/creationix/nvm/$NVM_VERSION/install.sh | sh && \
+  echo '[[ -r $NVM_DIR/bash_completion ]] && . $NVM_DIR/bash_completion' >> ~/.zshrc && \
+  . $HOME/.nvm/nvm.sh && \
+  nvm install $NODE_VERSION && \
+  nvm alias default $NODE_VERSION && \
+  nvm use default && \
+  npm install -g gulp del grunt-cli bower
 
 
 # Git Aliases
@@ -33,3 +37,5 @@ RUN git config --global alias.lg 'log --graph --pretty=format:"%Cred%h%Creset -%
 
 # Tmux
 RUN apt-get install -y tmux
+
+ENTRYPOINT ["/bin/zsh"]
