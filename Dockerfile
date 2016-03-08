@@ -15,7 +15,7 @@ RUN git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh && \
 ENV NVM_DIR=/root/.nvm
 ENV NODE_VERSION 5.7.1
 RUN NVM_VERSION="$(curl -s -L http://latest.nvm.sh -o /dev/null -D - | grep -Ei '^Location: .*tag/v[0-9.]+' | grep -oEi 'v[0-9.]+')" && \
-  curl -o- https://raw.githubusercontent.com/creationix/nvm/$NVM_VERSION/install.sh | sh && \
+  curl -o- https://raw.githubusercontent.com/creationix/nvm/$NVM_VERSION/install.sh | bash && \
   echo '[[ -r $NVM_DIR/bash_completion ]] && . $NVM_DIR/bash_completion' >> ~/.zshrc && \
   . $HOME/.nvm/nvm.sh && \
   nvm install $NODE_VERSION && \
