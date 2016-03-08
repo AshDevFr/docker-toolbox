@@ -17,7 +17,7 @@ RUN echo '[[ -r $NVM_DIR/bash_completion ]] && . $NVM_DIR/bash_completion' >> ~/
 
 ENV NVM_DIR=/root/.nvm
 ENV NODE_VERSION 5.7.1
-RUN . $HOME/.nvm/nvm.sh && nvm install $NODE_VERSION && nvm alias default $NODE_VERSION && nvm use default && npm install -g gulp del
+RUN . $HOME/.nvm/nvm.sh && nvm install $NODE_VERSION && nvm alias default $NODE_VERSION && nvm use default && npm install -g gulp del grunt-cli bower
 
 
 # Git Aliases
