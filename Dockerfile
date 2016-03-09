@@ -3,16 +3,21 @@ MAINTAINER AshDev <ashdevfr@gmail.com>
 
 RUN apt-get update
 
-RUN apt-get install -y curl wget vim git
+RUN apt-get install -y curl wget vim git zsh tmux
 
-# Zsh
-RUN apt-get install -y zsh
+# USER
+RUN useradd -ms /bin/zsh user
+RUN adduser user sudo
+ENV WORK_DIR /home/user
+USER user
+WORKDIR $WORK_DIR
+
+# Zsh config
 RUN git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh && \
-  cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc && \
-  chsh -s /bin/zsh
+  cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
 
 # NVM
-ENV NVM_DIR=/root/.nvm
+ENV NVM_DIR=$WORK_DIR/.nvm
 ENV NODE_VERSION 5.7.1
 RUN NVM_VERSION="$(curl -s -L http://latest.nvm.sh -o /dev/null -D - | grep -Ei '^Location: .*tag/v[0-9.]+' | grep -oEi 'v[0-9.]+')" && \
   curl -o- https://raw.githubusercontent.com/creationix/nvm/$NVM_VERSION/install.sh | bash && \
@@ -35,7 +40,6 @@ RUN git config --global alias.ri rebase -i
 RUN git config --global alias.l '!git --no-pager log --graph --pretty=format:"%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit --date=relative'
 RUN git config --global alias.lg 'log --graph --pretty=format:"%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit --date=relative'
 
-# Tmux
-RUN apt-get install -y tmux
+VOLUME $WORK_DIR
 
 ENTRYPOINT ["/bin/zsh"]
