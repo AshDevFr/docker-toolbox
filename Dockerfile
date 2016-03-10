@@ -8,6 +8,7 @@ RUN apt-get install -y curl wget vim git zsh tmux
 # USER
 RUN useradd -ms /bin/zsh user
 RUN adduser user sudo
+RUN echo 'user ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers.d/user
 ENV WORK_DIR /home/user
 USER user
 WORKDIR $WORK_DIR
